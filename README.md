@@ -28,7 +28,6 @@ import 'package:talker/talker.dart';
 Future<void> main() async {
   await OTel.initialize(
     serviceName: 'my-app',
-    endpoint: 'http://localhost:4317',
   );
 
   final talker = Talker(observer: OTelTalkerObserver());
