@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.1.0-beta.1-wip]
+## [0.1.0-wip]
 
 ### Added
 
@@ -13,3 +13,11 @@
   attributes for `TalkerError` and `TalkerException` entries.
 - Zone-scoped instrumentation suppression via
   `runWithoutTalkerInstrumentation()`.
+- Runnable example under `example/`.
+
+### Changed
+
+- Requires `talker` `^5.0.0`.
+- Exception attribute keys now come from the semantic-conventions
+  registry enums (`ExceptionAttributes`) instead of string literals
+  (emitted keys are unchanged).

@@ -14,7 +14,7 @@ span.
 
 ```yaml
 dependencies:
-  talker: ^4.0.0
+  talker: ^5.0.0
   otel_talker: ^0.1.0
 ```
 

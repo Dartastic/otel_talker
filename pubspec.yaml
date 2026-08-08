@@ -1,10 +1,9 @@
 name: otel_talker
 description: >-
-  OpenTelemetry log bridge for package:talker. Mirrors every Talker
-  log/error/exception into the OTel logs pipeline so structured records
-  flow to your backend while Talker keeps rendering its dev-friendly
-  output. Records inherit trace_id/span_id from the active span.
-version: 0.1.0-beta.1-wip
+  OpenTelemetry log bridge for package:talker. Mirrors every Talker log,
+  error and exception into the OTel logs pipeline while Talker keeps
+  rendering its dev-friendly output.
+version: 0.1.0-wip
 repository: https://github.com/dartastic/otel_talker
 homepage: https://dartastic.io
 
@@ -12,9 +11,9 @@ environment:
   sdk: ^3.0.0
 
 dependencies:
-  dartastic_opentelemetry: ^1.1.0-beta.4
-  dartastic_opentelemetry_api: ^1.0.0-beta.6
-  talker: ^4.0.0
+  dartastic_opentelemetry: ^1.1.0-beta.12
+  dartastic_opentelemetry_api: ^1.0.0-rc.1
+  talker: ^5.0.0
 
 dev_dependencies:
   dart_flutter_team_lints: ^3.5.2

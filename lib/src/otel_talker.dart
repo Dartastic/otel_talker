@@ -98,17 +98,17 @@ class OTelTalkerObserver extends talker_lib.TalkerObserver {
     if (error != null) {
       attrs
         ..add(OTel.attributeString(
-          'exception.type',
+          ExceptionAttributes.exceptionType.key,
           error.runtimeType.toString(),
         ))
         ..add(OTel.attributeString(
-          'exception.message',
+          ExceptionAttributes.exceptionMessage.key,
           error.toString(),
         ));
     }
     if (_includeStackTrace && stackTrace != null) {
       attrs.add(OTel.attributeString(
-        'exception.stacktrace',
+        ExceptionAttributes.exceptionStacktrace.key,
         stackTrace.toString(),
       ));
     }
