@@ -3,7 +3,7 @@ description: >-
   OpenTelemetry log bridge for package:talker. Mirrors every Talker log,
   error and exception into the OTel logs pipeline while Talker keeps
   rendering its dev-friendly output.
-version: 0.1.0-wip
+version: 0.1.0
 repository: https://github.com/dartastic/otel_talker
 homepage: https://dartastic.io
 
