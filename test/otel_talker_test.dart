@@ -102,4 +102,42 @@ void main() {
       expect(exporter.records, isEmpty);
     });
   });
+
+  // Regression: instrumentation must never be in the functional path.
+  // Before the guard, the observer threw
+  // `StateError: OTel.initialize() must be called first.` from inside
+  // `talker.info(...)`, so logging the OTel init failure itself took the
+  // app down.
+  group('OTel SDK not initialized', () {
+    setUp(() async {
+      await OTel.reset();
+    });
+
+    test('talker.info does not throw', () async {
+      final t = Talker(observer: OTelTalkerObserver());
+      expect(() => t.info('collector unreachable'), returnsNormally);
+    });
+
+    test('talker.handle does not throw', () async {
+      final t = Talker(observer: OTelTalkerObserver());
+      expect(
+        () => t.handle(Exception('init failed'), StackTrace.current, 'boom'),
+        returnsNormally,
+      );
+    });
+
+    test('logging the OTel init failure itself does not throw', () async {
+      final t = Talker(observer: OTelTalkerObserver());
+      expect(
+        () {
+          try {
+            OTel.tracerProvider();
+          } catch (e, st) {
+            t.handle(e, st, 'OTel.initialize() failed');
+          }
+        },
+        returnsNormally,
+      );
+    });
+  });
 }

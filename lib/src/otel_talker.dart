@@ -4,6 +4,7 @@
 import 'package:dartastic_opentelemetry/dartastic_opentelemetry.dart';
 import 'package:talker/talker.dart' as talker_lib;
 
+import 'otel_guard.dart';
 import 'otel_talker_suppression.dart';
 
 /// A `package:talker` [TalkerObserver] that mirrors every event
@@ -91,6 +92,20 @@ class OTelTalkerObserver extends talker_lib.TalkerObserver {
     required StackTrace? stackTrace,
   }) {
     if (talkerInstrumentationSuppressed()) return;
+    // A Talker observer runs inside the caller's `talker.info(...)` /
+    // `talker.handle(...)` call. Throwing from here would make logging
+    // fail, so an uninitialized OTel SDK drops the record instead —
+    // including when the line being logged *is* the OTel init failure.
+    tryTelemetryEffect(
+      () => _emitToOTel(data, error: error, stackTrace: stackTrace),
+    );
+  }
+
+  void _emitToOTel(
+    talker_lib.TalkerData data, {
+    required Object? error,
+    required StackTrace? stackTrace,
+  }) {
     final provider = _provider ?? OTel.loggerProvider();
     final logger = provider.getLogger(_loggerName);
 
