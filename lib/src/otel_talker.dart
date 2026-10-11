@@ -1,7 +1,7 @@
 // Licensed under the Apache License, Version 2.0
 // Copyright 2025, Mindful Software LLC, All rights reserved.
 
-import 'package:dartastic_opentelemetry/dartastic_opentelemetry.dart';
+import 'package:dartastic_opentelemetry_api/dartastic_opentelemetry_api.dart';
 import 'package:talker/talker.dart' as talker_lib;
 
 import 'otel_talker_suppression.dart';
@@ -48,7 +48,7 @@ class OTelTalkerObserver extends talker_lib.TalkerObserver {
   ///   fully rendered Talker output (which preserves Talker's
   ///   prefixes). When `false`, only the raw message is emitted.
   OTelTalkerObserver({
-    LoggerProvider? loggerProvider,
+    APILoggerProvider? loggerProvider,
     String loggerName = 'package.talker',
     bool includeStackTrace = true,
     bool useRenderedMessage = true,
@@ -57,7 +57,7 @@ class OTelTalkerObserver extends talker_lib.TalkerObserver {
         _includeStackTrace = includeStackTrace,
         _useRenderedMessage = useRenderedMessage;
 
-  final LoggerProvider? _provider;
+  final APILoggerProvider? _provider;
   final String _loggerName;
   final bool _includeStackTrace;
   final bool _useRenderedMessage;
@@ -91,23 +91,23 @@ class OTelTalkerObserver extends talker_lib.TalkerObserver {
     required StackTrace? stackTrace,
   }) {
     if (talkerInstrumentationSuppressed()) return;
-    final provider = _provider ?? OTel.loggerProvider();
+    final provider = _provider ?? OTelAPI.loggerProvider();
     final logger = provider.getLogger(_loggerName);
 
     final attrs = <Attribute<Object>>[];
     if (error != null) {
       attrs
-        ..add(OTel.attributeString(
+        ..add(OTelAPI.attributeString(
           ExceptionAttributes.exceptionType.key,
           error.runtimeType.toString(),
         ))
-        ..add(OTel.attributeString(
+        ..add(OTelAPI.attributeString(
           ExceptionAttributes.exceptionMessage.key,
           error.toString(),
         ));
     }
     if (_includeStackTrace && stackTrace != null) {
-      attrs.add(OTel.attributeString(
+      attrs.add(OTelAPI.attributeString(
         ExceptionAttributes.exceptionStacktrace.key,
         stackTrace.toString(),
       ));
@@ -122,7 +122,7 @@ class OTelTalkerObserver extends talker_lib.TalkerObserver {
       severityNumber: _mapLevel(data.logLevel),
       severityText: levelName,
       body: body,
-      attributes: attrs.isEmpty ? null : OTel.attributes(attrs),
+      attributes: attrs.isEmpty ? null : OTelAPI.attributes(attrs),
     );
   }
 }
