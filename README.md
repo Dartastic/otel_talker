@@ -116,7 +116,7 @@ span.
 ```yaml
 dependencies:
   talker: ^5.0.0
-  otel_talker: ^0.2.0
+  otel_talker: ^0.2.1
 ```
 
 ## Use
